@@ -12,7 +12,7 @@ MOUNT C C:\Users\alexs\Desktop\Universidad\PDIH\S1
 ~~~~
 La primera sentencia sirve para configurar el teclado español y la segunda para montar en C: el contenido de la carpeta  S1, de manera que esta sea la carpeta raíz en DOSBox. Dentro de esta carpeta vamos a encontrar la carpeta denominada OLDGames, que contendrá los juegos que vamos a probar. Accedo a esta carpeta hasta dirigirme al ejecutable`vball`. Ahora simplemente lo ejecuto escribiendo en DOSBox `VBALL.EXE` y el juego se abrirá en la terminal.
 
-![Imagen ejecucion juego vball.exe](./Capturas/juego.jpg)
+![Imagen ejecucion juego vball.exe](./Capturas/juegoASM.jpg)
 
 ### 2º Configuración de DOSBox montando el directorio con el entorno de Borland c
 
@@ -58,7 +58,7 @@ Así obtenemos el ejecutable y para ejecutarlo simplemente ponemos su nombre:
 ~~~~
 hola.exe
 ~~~~
-![Imagen ejecucion ejecutable hola.exe](./Capturas/holanormal.jpg)
+![Imagen ejecucion ejecutable hola.exe](./Capturas/ejecucionHolaMundo.jpg)
 
 ##### Modificamos archivo "hola" añadiendo el bucle
 
@@ -96,6 +96,6 @@ END main
 ~~~~
 Ahora lo compilamos con `c.bat holaBucle` y lo ejecutamos con `holaBucle.exe` y vemos como aparece "hola mundo" repetido 7 veces.
 
-![Imagen ejecucion hola mudo modificado con el bucle](./Capturas/ejecucionBucle.jpg)
+![Imagen ejecucion hola mudo modificado con el bucle](./Capturas/ejecucionHolaMundoBucle.jpg)
 
 ---
