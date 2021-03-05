@@ -24,7 +24,7 @@ De esta manera ya tendríamos montada la unidad C: en dicha carpeta.
 
 ### 3º Crear ejemplo "hola mundo" en ensamblador, comprobar su funcionamiento y modificarlo para que aplique un bucle que muestre el mensaje 7 veces
 
-Dentro de BIN, creamos una carpeta denominada S1, donde colocaremos los archivos ASM. Dentro compilamos el archivo hola.asm y vemos su funcionamiento. 
+Dentro de **BIN**, creamos una carpeta denominada **S1**, donde colocaremos los archivos .ASM. Dentro compilamos el archivo hola.asm y vemos su funcionamiento. 
 ~~~~
 pila segment stack 'stack'
 	dw 100h dup (?)
