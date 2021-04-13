@@ -209,7 +209,7 @@ Esta función se utiliza para, pasándole la posición del J1 y J2 y la posició
 
 ~~~
 		//Si hay colision, la "y" se multiplicara por "-1"
-		colision=toca(jugador1x,jugador2x,jugador2y,next_x,next_y,x,y);
+		colision=toca(jugador1x,jugador2x,jugador2y,next_x,next_y);
 		
 		if (next_x >= max_x || next_x < 0) {
 			direction_x*= -1;
@@ -246,10 +246,8 @@ En esta parte del código se utiliza la función `toca`, para detectar si la pel
 //### j2y = coordenada y jugador 2
 //### nx  = next_x de pelota
 //### ny  = next_y de pelota
-//### px  = coordenada x pelota
-//### py  = coordenada x pelota
 //########################################
-bool toca(int j1x, int j2x, int j2y, int nx, int ny, int px, int py){
+bool toca(int j1x, int j2x, int j2y, int nx, int ny){
 	bool toca = false;
 	
 	if(nx>=j1x && nx<=j1x+10 && ny == 1)
@@ -368,7 +366,7 @@ int main(void) {
 		next_y = y + direction_y;
 		
 		//Si hay colision, la "y" se multiplicara por "-1"
-		colision=toca(jugador1x,jugador2x,jugador2y,next_x,next_y,x,y);
+		colision=toca(jugador1x,jugador2x,jugador2y,next_x,next_y);
 		
 		if (next_x >= max_x || next_x < 0) {
 			direction_x*= -1;
