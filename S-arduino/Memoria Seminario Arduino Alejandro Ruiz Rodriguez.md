@@ -111,4 +111,4 @@ Y el programa quedaría de la siguiente manera:
 
 ![Imagen ejercicio 2](./Capturas/ejer2.jpg)
 
-En este modelo, el botón deja pasar corriente si es pulsado, suministrándole en tal caso energía al led rojo, conectado en la entrada 13.
+En este modelo, el botón deja pasar corriente si es pulsado, suministrándole en tal caso energía a la entrada 7, activándose el led rojo conectado en la entrada 13.
