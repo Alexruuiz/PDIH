@@ -1,0 +1,127 @@
+# Seminario 4: LKM
+
+**Trabajo realizado por Alejandro Ruíz Rodríguez **
+
+### 1º MÓDULO: Creación y carga
+
+#### Creación del módulo *sem4.c*
+
+El primer paso será crear un archivo en c que contendrá el código del LKM. El código desarrollado es el siguiente:
+
+~~~~
+/**
+ * @file    sem4.c
+ * @author  Alex Ruiz
+ * @date    4 April 2015
+ * @version 0.1
+ * @brief  An introductory "Hello World!" loadable kernel module (LKM) that can display a message
+ * in the /var/log/kern.log file when the module is loaded and removed. The module can accept an
+ * argument when it is loaded -- the name, which appears in the kernel log files.
+ * @see http://www.derekmolloy.ie/ for a full description and follow-up descriptions.
+*/
+#include <linux/init.h>             // Macros used to mark up functions e.g., __init __exit
+#include <linux/module.h>           // Core header for loading LKMs into the kernel
+#include <linux/kernel.h>           // Contains types, macros, functions for the kernel
+
+MODULE_LICENSE("GPL");              ///< The license type -- this affects runtime behavior
+MODULE_AUTHOR("Alex Ruiz");      ///< The author -- visible when you use modinfo
+MODULE_DESCRIPTION("A simple Linux driver for the BBB.");  ///< The description -- see modinfo
+MODULE_VERSION("0.1");              ///< The version of the module
+
+static char *name = "Alex";        ///< An example LKM argument -- default value is "world"
+static int numero = 5;
+module_param(name, charp, S_IRUGO); ///< Param desc. charp = char ptr, S_IRUGO can be read/not changed
+MODULE_PARM_DESC(name, "The name to display in /var/log/kern.log");  ///< parameter description
+
+/** @brief The LKM initialization function
+ *  The static keyword restricts the visibility of the function to within this C file. The __init
+ *  macro means that for a built-in driver (not a LKM) the function is only used at initialization
+ *  time and that it can be discarded and its memory freed up after that point.
+ *  @return returns 0 if successful
+ */
+static int __init helloBBB_init(void){
+   printk(KERN_INFO "EBB: Modulo cargado correctamente\n");
+   if(numero%2==1)
+   	printk(KERN_INFO "EBB: %s, el numero %i es impar (mensaje del BBB LKM!)\n", name, numero);
+   else
+   	printk(KERN_INFO "EBB: %s, el numero %i es par (mensaje del BBB LKM!)\n", name, numero);
+   return 0;
+}
+
+/** @brief The LKM cleanup function
+ *  Similar to the initialization function, it is static. The __exit macro notifies that if this
+ *  code is used for a built-in driver (not a LKM) that this function is not required.
+ */
+static void __exit helloBBB_exit(void){
+   printk(KERN_INFO "EBB: Adios %s (mensaje del BBB LKM!)\n", name);
+}
+
+/** @brief A module must use the module_init() module_exit() macros from linux/init.h, which
+ *  identify the initialization function at insertion time and the cleanup function (as
+ *  listed above)
+ */
+module_init(helloBBB_init);
+module_exit(helloBBB_exit);
+~~~~
+
+El programa desarrollado es bastante sencillo. Nos dirá si el valor contenido en la variable estática `numero`, es par o impar, y se dirigirá a nosotros utilizando el nombre contenido en la variable `nombre`.
+
+#### Compilación del código
+
+Ahora procedemos a compilarlo. Para ello utilizaremos un *Makefile* cedido por "*derekmolloy*"en su repositorio. El código adaptado para nuestro programa será el siguiente:
+
+~~~
+obj-m+=sem4.o
+
+all:
+	make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) modules
+clean:
+	make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) clean
+
+~~~
+
+El resultado que obtenemos por la terminal es el siguiente:
+
+![Imagen makefile](./Capturas/make1.jpg)
+
+En nuestra carpeta aparecerán los siguientes archivos:
+
+![Imagen Archivos carpeta seminario tras Makefile](./Capturas/carpetasem4.jpg)
+
+De aquí el archivo que nos interesa es el de nombre `sem4.ko` (Archivo LKM)
+
+#### Carga del módulo
+
+Ahora vamos a cargar este nuevo módulo obtenido en el kernel. Para ello utilizaremos las funciones `insmod` y `lsmod.`
+
+![Imagen Insmod](./Capturas/insmod.jpg)
+
+Primero insertamos el módulo, y a continuación utilizamos `lsmod` para visualizar los módulos insertados. De esta manera podemos ver que nuestro módulo *sem4* ha sido insertado correctamente (Aparece en la primera fila).
+
+#### Solicitamos información
+
+Ahora podemos solicitar información sobre el modulo insertado. Para ello solicitaremos información sobre el módulo utilizando la función `modinfo`:
+
+![Imagen modinfo](./Capturas/modinfo.jpg)
+
+Como vemos nos devuelve la información de dicho módulo (filename, license, Descripción, autor, versión...)
+
+#### Eliminamos e módulo del Kernel
+
+Finalmente eliminamos el módulo de kernel utilizando la función `rmmod`:
+
+![Imagen rmmod](./Capturas/rmmod.jpg)
+
+### 2º RESULTADOS
+
+#### Inspección de logs del sistema
+
+Ahora vamos a ver si el programa funciona correctamente, viendo la salida producida en los archivos logs del sistema, por la función `printk()`. Para ello nos pasamos a modo *superusuario* y accedemos a la carpeta **/var/log**, y dentro vemos las 10 últimas líneas del archivo **kern.log**, utilizando el comando `tail -f`.
+
+![Imagen logs del kernel](./Capturas/resultado1.jpg)
+
+Al final podemos ver el resultado de nuestro programa. Primero nos indica que se ha montado correctamente, luego nos dice si el valor cargado en la variable `numero` es par o impar, y finalmente se despide de nosotros. En nuestro caso nos indica que el número 5 es impar. Para asegurarnos de que  funciona bien el programa, pruebo cambiando el valor de 5 a 6 y miro el resultado de nuevo, repitiendo el mismo proceso:
+
+![Imagen logs del kernel 2](./Capturas/resultado2.jpg)
+
+El programa devuelve que el número 6 es par, por lo que el programa funciona correctamente.
