@@ -1,0 +1,11 @@
+Controles-----------------------------------------------------------
+
+TECLADO                           RATON
+
+Arriba    = Wiimote.Up           Click Dcho/Izq = Wiimote.B/A
+Abajo     = Wiimote.Down         Click central  = Wiimote.Home
+Izq.      = Wiimote.Left         Deshacer       = Wiimote.Minus (-)
+Drcha.    = Wiimote.Right        Rehacer        = Wiimote.Plus (+)
+Spacebar  = Wiimote.Plus (+)     Rueda Up/Down  = Wiimote.1/2
+Retroceso = Wiimote.Minus (-)    Puntero X/Y    = Wiimote.PointerX/Y
+--------------------------------------------------------------------
